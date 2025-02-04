@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Registration Form</title>}
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1>SELECCIÓN DE PERSONAL</h1>
+    <p>¿Queres formar parte de nuestro equipo de trabajo? </p>
+    <form id="miFormulario">
+      <fieldset>
+        <label for="NombreCompleto">Ingresa tu nombre completo: <input id="NombreCompleto" name="NombreCompleto" type="text" required /></label>
+        <label for="Edad">Ingresa tu Edad:
+            <input id="Edad" name="Edad" type="number" min="18" max="99" placeholder="25">
+        </label>
+        <label for="Direccion">Ingresa tu direccion: <input id="Direccion" name="Direccion" type="text" required /></label>
+        <label for="Telefono">Ingresa tu Telefono: <input id="Telefono" name="Telefono" type="number" required /></label>
+      </fieldset>
+      <fieldset>
+        <legend>Disponibilidad</legend>
+        <label><input type="radio" name="Disponibilidad" value="Mañana" checked /> Medio día por la mañana</label>
+<label><input type="radio" name="Disponibilidad" value="Noche" /> Medio día por la noche</label>
+<label><input type="radio" name="Disponibilidad" value="Full Time" /> Full time</label>
+      </fieldset>
+      <fieldset>
+        <label for="Movilidad">Que movilidad tienes?
+          <select id="Movilidad" name="Movilidad">
+            <option value="">(Seleccione una opcion)</option>
+            <option value="Auto">Auto</option>
+            <option value="Moto">Moto</option>
+            <option value="Bici">Bici</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </label>
+        <label for="Expheladeria">Tienes experiencia en heladeria o atencion al cliente?:
+          <textarea id="Expheladeria" name="Expheladeria" rows="3" cols="30" placeholder="Escribe aqui una breve descripcion de tu experiencia"></textarea>
+        </label>
+      </fieldset>
+      <button type="submit">Enviar</button>
+    </form>
+
+    <p id="respuesta"></p>
+
+    <script>
+        document.getElementById("miFormulario").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            var formData = new FormData(this);
+            var jsonData = {};
+    
+            // Convertir FormData a JSON
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+    
+            fetch("https://script.google.com/macros/s/AKfycbwHlucPnijXztJ4LOwOBl4FibM5P30zoFzrR50g7eBNi4fJxjmRHdKbXcCtQiQYBCct/exec", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(jsonData) // Asegurar que se envía como JSON
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log("Respuesta del servidor:", data);
+                document.getElementById("respuesta").innerText = "Formulario enviado correctamente";
+                document.getElementById("miFormulario").reset();
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+    
+  </body>
+</html>
